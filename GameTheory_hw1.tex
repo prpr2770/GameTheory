@@ -1,0 +1,365 @@
+\documentclass[11pt]{article}
+%\usepackage{hyperref}
+\usepackage{amsthm,amssymb,graphicx,graphicx,amsmath,cite}
+\usepackage[top=3cm,bottom=3cm,left=3cm,right=3cm]{geometry}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{etoolbox}
+\usepackage{enumerate}
+\usepackage{hyperref}
+%\include{notation}
+%\bootrue{Advanced}
+
+
+\newtheorem{lemma}{Lemma}
+  %\newtheorem{thm}{Theorem}
+  \newtheorem{theorem}{Theorem}
+  \newtheorem{proposition}{Proposition}
+  %\newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem{definition}{Definition}
+ \theoremstyle{definition}
+\newtheorem{example}{Example}
+
+  %% USE THESE IN YOUR TEX CODE.
+\def\E{\mathbb{E}} % For Expectation
+\def\P{\mathbb{P}} % for probabiltiy
+\def\Q{\mathbb{Q}}
+\def\Z{\mathbb{Z}}
+\def\F{\mathcal{F}} % for sigma algebra
+\def\EE{\mathbb{E}^{!o}} % For Palm expectation
+\def\ie{{\em i.e.}} 
+\def\eg{{\em e.g.}}
+\def\R{\mathbb{R}}
+\def\V{\operatorname{Var}}
+\def\L{\mathcal{L}} % For Laplace transform
+\def\i{\mathbf{1}} % Indicator random variable
+\def\l{\ell}% For path loss moel
+\def\F{\mathcal{F}} % For Sigma-Algebra
+\begin{document}
+\input{preamble.tex}
+\assignment{1}{09/15/2015}{Classes of Strategic Games}{Prasanth Prahladan}{100817764}
+
+\section{Tragedy of Commons}
+There exist 10 families. Each goat owned by a family covers fraction a of the plot of land and generates b buckets of milk, where $b = e^{1-\frac{1}{10a}}$. 
+Let the number of goats per family be $g_i$ such that $\sum^{10}_{i=1}g_i = G$ is the total number of goats. Each goat occupies an equal fraction of the common plot of land i.e. $a_i = \frac{1}{G}$.
+
+Total milk produced, $M = \sum_{i=1}^{10} g_ie^{1-\frac{1}{10a_i}} = G e^{1-\frac{G}{10}}$.
+
+\subsection{If a social planner wishes to maximize the total milk production}
+\begin{align*}
+\frac{d}{dG}M = 0 \implies G = 10.
+\end{align*}
+The total milk produced under this scenario, $M_{social} = 10$ buckets.
+Therefore, among the 10 families sharing the plot, each family can own 1 goat. Or else, some families can own no goats, while other might own more than one goat.
+
+\subsection{If each family member only gets the amount of milk produced by its own goat}
+Let $M_i$ be the milk obtained by family i
+\begin{align*}
+M_i(g_i, g_{-i}) = g_i e^{1-\frac{1}{10a_i}}\\
+& = g_i e^{1-\frac{g_i + \sum g_{-i}}{10}}
+\end{align*}
+Maximizing this function we obtain
+\begin{align*}
+\frac{d}{dg_i}M_i = e^{1-\frac{G}{10}}(1 + g_i \frac{-1}{10}) = 0 \implies g_i = 10
+\end{align*}
+When each family looks at its own self-interest, then each is forced to purchase 10 goats.
+The total milk produced from the plot of land,$M_{selfish}$ becomes
+\begin{align*}
+M_{selfish} = \sum M_i = 10 e^{1-\frac{10*10}{10}} < 10 = M_{social}
+\end{align*}
+
+
+
+\section{Routing Problem}
+
+\subsection{Social Planner}
+The total cost of routing and the solution of the minimization problem are obtained as follows
+\begin{align*}
+c_T = x c_H(x) + (1-x) c_L(1-x) = x^2 + (1-x)\\
+\frac{d}{dx}c_T = 0 \implies x = 1/2.
+\end{align*}
+Therefore, total cost $c_T = \frac{3}{4}$.
+
+\subsection{2 Decision Makers}
+
+Let x and y be the respective fraction of inflow diverted into the High-Route by each decision maker. 
+Since each decision maker obtains only $1/2$ the total unit flow into the network, we obtain the cost of routing for each decision maker as follows:
+\begin{align*}
+c_1(x,y) &= 0.5x * c_H(0.5*(x+y)) + 0.5(1-x) * c_L(0.5(1-x + 1-y))\\
+c_2(x,y) &= 0.5y * c_H(0.5*(x+y)) + 0.5(1-y) * c_L(0.5(1-x + 1-y))
+\end{align*}
+Assuming the agent-2 fixes his choice at y, we derive the optimal value of x for agent-1 as 
+\begin{align*}
+c_1(x,y) &= 0.5x(0.5*(x+y))+ 0.5(1-x)\\
+\frac{d}{dx}c_1(x,y) &= 0.5^2(2x + y) - 0.5\\ 
+\frac{d^2}{dx^2}c_1(x,y) &= 2(0.5)^2 > 0 \implies \text{minima}
+\frac{d}{dx}c_1(x,y) = 0 &\implies x = 1-y/2
+\end{align*}
+Therfore, by symmetry of the problem, we have $y = 1-x/2$.
+Solving the set of equations we obtain, $x^* = y^* = 2/3$. The total cost of the routing $c_T = 7/9$.
+
+A Nash-Equilibrium is $(x^*,y^*)$ if neither decision makers has any incentive to unilaterally deviate from their action choice.Further, each player i takes the best response for the given response of the opponent. 
+
+\subsection{n-Decision Makers}
+As above, we note that each agent obtains $1/n$ of the total incoming flow. Further, let $x_i$ be the fraction of inflow traffic diverted into the High-Route by each agent-i. We compute the cost of routing for each agent, $c_i$ as
+\begin{align*}
+c_i(x_i,x_{-i}) &= \frac{1}{n}x_i c_H(x_i, x_{-i}) + \frac{1}{n}(1-x_i)c_L(1-x_i, 1-x_{-i})\\
+\frac{1}{n}x_i (1/n \sum x_i) + \frac{1}{n}(1-x_i)\\
+&= \frac{1}{n^2}(x_i^2 + x_i\sum x_{-i})+ \frac{1}{n}(1-x_i)\\
+\frac{d}{dx_i}c_i(x_i,x_{-i}) &= \frac{1}{n^2}(2x_i + \sum x_{-i}) - \frac{1}{n} = 0.
+\end{align*}
+we thus obtain, $x_i = n/2(1 - \frac{\sum x_{-i}}{n})$. The linear system of equation representing the above equations is $A\bar{x}=n/2\bar{e}$ where $\bar{e} = (1,1,\cdots, 1)'$ and $\bar{x}= (x_1, \cdots, x_n)'$. Further, the A matrix has diagonal elements unity and off-diagonal elements equal to $1/2$.
+
+By symmetry of the problem, we can assume that the vector with $x_i = \alpha$ i.e. $\bar{x}=(\alpha, \alpha, \cdots \alpha)$ is a solution to the above system of equations. 
+\begin{align*}
+x_i &= n/2(1 - \frac{\sum x_{-i}}{n})\\
+\alpha &= n/2(1 - \frac{(n-1)\alpha}{n})\\
+\alpha &= n/(n+1)
+\end{align*}
+
+To test this, we use $\bar{x} = \alpha \bar{e}$ in $A \alpha \bar{e} = n/2\bar{e}$:
+\begin{align*}
+LHS &= \alpha + (n-1)\frac{1}{2}\alpha\\
+&=\alpha*(n+1)/2 =\frac{n}{n+1}\frac{n+1}{2} = n/2 = RHS
+\end{align*}
+Thus, $\alpha = n/(n+1)$ is the optimal solution. Further, note that $\lim_{n\rightarrow \infty} \alpha = 1$.
+This implies, that when n-agents take decisions simultaneously, they permit all the incoming traffic into the High-Route, causing congestion in that route, with no cars using the Low-route. This is starkly in contrast to the decision taken by the Social Planner!
+
+\section{Auctions}
+An object is to be assigned to a player in a set $P = {1,2, \cdots n}$ in exchange for payment. Player $i$'s valuation of the object is $v_i$. The players are indexed based on the ordering of their valuations i.e. $v_1 > v_2 >\cdots > v_n$.
+
+The mechanism used to assign the object is a "Sealed-bid Auction":
+Players simultaneously submit bids($b_i > 0$) and the object is given to the player with the lowes index ampng those who submit the highest bid, in exchange for a payment. 
+
+\subsection{First Price Auction(FPA)}
+In a "First-Price Auction", the payment that the winner makes is the price that she bids. We now proceed to formulate the FPA as a Strategic Game and analyse its Nash Equilibria. 
+
+Formulation as a Strategic Game:
+\begin{enumerate}
+\item Set of Players, $P = {1,2, .., n}$
+\item Action set for each player $b_i \in A_i = \mathcal{R}^{+}=(0,\infty)$; 
+Join Action Set $A = A_1 \times A_2 \times \cdots A_n$, with joint-action elements $b = (b_1, b_2, \cdots, b_n)$.
+\item The utility-function for player-$i (u_i): A \rightarrow \mathcal{R} $ is defined as:
+\begin{align}
+u_i(b_i,b_{-i}) = \bigg\{\begin{array}{cc}v_i - b_i & b_i > \bar{b}\\ 0 & 1\end{array} \label{eq:FPA_utility}
+\end{align}
+where $\bar{b} = max_{j \neq i} b_j$.
+\end{enumerate}
+
+Analysis of Nash-Equilibria:
+\begin{enumerate}
+\item $b_i > v_i$
+\begin{enumerate}
+\item $\bar{b} \in (-\infty,v_i) \colon\colon u_i = v_i - b_i < 0$
+\item $\bar{b} \in (v_i,b_i) \colon \colon u_i = v_i - b_i < 0$ 
+\item $\bar{b} \in (b_i, \infty) \colon\colon u_i = 0 \implies$ Favourable! 
+\end{enumerate}
+\item $b_i < v_i$
+\begin{enumerate}
+\item $\bar{b} \in (-\infty,b_i) \colon\colon u_i = v_i - b_i > 0 \implies $ Favourable! 
+\item $\bar{b} \in (b_i,v_i) \colon \colon u_i =  0$ 
+\item $\bar{b} \in (v_i, \infty) \colon\colon u_i = 0$ 
+\end{enumerate}
+\end{enumerate}
+From analysing scenario (1), we learn that:
+"If you bid higher than your valuation, your best return is 0. Therefore, bid lower!"
+From analysing scenario (2), we learn that:
+"Bidding less than your valuation is beneficial under the certainty that other's do not bid higher than you. Else, it's best to increase your  bid to your valuation, to ensure non-negative returns."
+
+Therefore, in the Nash-Equilibrium we obtain the Action Profile $b* = (b_i*, b_2*, \cdots b_n*) = (v_1, v_2, \cdots v_n)$. Since, we know that $v_1 > \cdots > v_n$, this implies that Player 1 obtains the object.
+
+
+\subsection{Second Price Auction(SPA)}
+In a "Second-Price Auction", the payment that the winner makes is the price of the next-highest bid i.e the highest bid among the other participants. We proceed to show the following:
+\begin{enumerate}
+\item The bid $v_i$ of any player $i$ is a weakly dominant action: player i's payoff when he bids $v_i$ is atleast as high as his payoff when he submits any other bid, regardless of the actions of other players.
+\item There exists "inefficient" equilibrium in which the winner is not Player 1.
+\end{enumerate}
+
+Formulation as a Strategic Game:
+\begin{enumerate}
+\item Set of Players, $P = {1,2, .., n}$
+\item Action set for each player $b_i \in A_i = \mathcal{R}^{+}=(0,\infty)$; 
+Join Action Set $A = A_1 \times A_2 \times \cdots A_n$, with joint-action elements $b = (b_1, b_2, \cdots, b_n)$.
+\item The utility-function for player-$i (u_i): A \rightarrow \mathcal{R} $ is defined as:
+\begin{align}
+u_i(b_i,b_{-i}) = \bigg\{\begin{array}{cc}v_i - \bar{b} & b_i > \bar{b}\\ 0 & 1\end{array} \label{eq:SPA_utility}
+\end{align}
+where $\bar{b} = max_{j \neq i} b_j$.
+\end{enumerate}
+
+
+Analysis of Nash-Equilibria:
+\begin{enumerate}
+\item $b_i > v_i$
+\begin{enumerate}
+\item $\bar{b} \in (-\infty,v_i) \colon\colon u_i = v_i - \bar{b} > 0 \implies$ Favourable!
+\item $\bar{b} \in (v_i,b_i) \colon \colon u_i = v_i - \bar{b} < 0 \implies$ Unfavourable! 
+\item $\bar{b} \in (b_i, \infty) \colon\colon u_i = 0 $ 
+\end{enumerate}
+\item $b_i < v_i$
+\begin{enumerate}
+\item $\bar{b} \in (-\infty,b_i) \colon\colon u_i = v_i - \bar{b} >> 0 \implies $ Favourable! 
+\item $\bar{b} \in (b_i,v_i) \colon \colon u_i =  0$ 
+\item $\bar{b} \in (v_i, \infty) \colon\colon u_i = 0$ 
+\end{enumerate}
+\end{enumerate}
+From analysing scenario(1b), agent i learns that to minimize risk of a negative utility/return, it should decrease its bid to $v_i$. Therefore, all agents shall prefer to make bids $b_i \leq v_i$.
+
+From analysing scenario(2), agent i learns that to ensure a positive return, it should increase its bid $b_i$ to $v_i$.
+
+
+\begin{align*}
+u_i(v_i,b_{-i}) &= \bigg\{\begin{array}{cc}v_i - \bar{b} & v_i > \bar{b}\\ 0 & 1\end{array}\\
+u_i(b_i,b_{-i}) &= \bigg\{\begin{array}{cc}v_i - \bar{b} & b_i > \bar{b}\\ 0 & 1\end{array}\\
+\end{align*}
+Comparing the above two equations and noting the scenarios 2(b) and 1(c) provide utility of Zero, we note that $b_i = v_i$ is a weakly dominating strategy with
+\begin{align*}
+u_i(v_i,b_{-i}) &\geq u_i(b_i,b_{-i})
+\end{align*}
+
+
+However, lets consider the situation for agent 1 with $b_1 < < v_1$. Note that if
+\begin{enumerate}
+\item $ \bar{b} < b_1 < v_1 \colon\colon u_1 = v_1 - \bar{b} >> 0$. Player 1 wins.
+\item $b_1 < \bar{b} < v_1  \colon\colon u_1 = 0$. Player 1 doesn't win but receives a zero payoff.
+\end{enumerate}
+There exists a continuum of states satisfying $b_1 < \bar{b} < v_1$ in which Player 1 does not win, but also does not have any incentive to unilaterally change its decision except to equate $b_1 = v_1$ to ensure a positive return.
+These set of states are called 
+\section{Games of Timing}
+"A war on attrition": 
+Two players are involved in a dispute over an object. The value of the object to player i is $(v_i>0)$. Time is modeled as a continuous variable that starts at 0 and runs indefinitely. 
+
+Each player chooses when to concede the object to the other players. If first player to concede does so at time t, the other players obtains the object at that time. If both players concede simultaneously the object is split equally among the players, thus each receiving a payoff of $(v_i/2)$. Time is valuable: until the first concession each player loses one unit of payoff per unit of time.
+
+We formulate the above situation as a strategic game and show that in Nash-Equilibrium, one of the players concedes immediately.
+
+Strategic Game Formulation
+Let each agent-1 and agent-2 choose to concede at times x and y respectively. 
+\begin{enumerate}
+\item Set of agents, $P = {1,2}$
+\item Set of actions for each agent, $A_i = \mathcal{R}^{+} = [0,\infty)$ and Joint-Action profile set $A = A_1 \times A_2$.
+\item Utility for each agent $u_i: A \rightarrow \mathcal{R}$ such that
+\begin{align}
+u_1(x,y) = \bigg\{ \begin{array}{cc}
+v_1 - y & x>y\\
+v_1/2 - x & x= y\\
+-x & x<y
+\end{array}
+\end{align}
+\end{enumerate}
+
+Analysis of Nash-Equilibria:
+
+We first ask, whether each agent should choose their time to concede such that $t_i > v_i$.  Let's assume that agent-2 fixes his choice to wait for y seconds before conceding. Then for agent-1, we note the following situations if $v_1 < x$
+\begin{enumerate}
+\item $y \in (-\infty,v_1] \colon u_1 = v_1 - y \geq 0$. Favourable!
+\item $y\in (v_1,x)\colon u_1 = v_1 - y < 0$
+\item $y = x \colon u_1 = v_1/2 - y << 0$
+\item $y>x \colon u_1 = -x$
+\end{enumerate}
+Therefore, for agent-1 to ensure non-negative rewards, she should ensure her choice of time-to-concede to be less than her valuation. By symmetry of the argument, both agents shall rationally choose to wait for times less than their valuation. 
+
+Now, let's assume that agent-2 fixes his choice at $y<v_2$. We now examine, what would be the rational choice of $x\in[0,v_1)$ for agent-1
+\begin{enumerate}
+\item Let $x=0 \implies$ $u_1(0,y) =0$ and $u_2(0,y)= v_2$.
+\item Let $x>0 \implies$ $u_1(x,y) = -x$ and $u_2(x,y) = v_2 - x$. 
+\end{enumerate}
+Thus, we note that for agent-1, with $y>x$, it is a better strategy for player-1 to concede immediately at the start of game  with $x=0$.
+
+
+\section{Games of Location}
+Each of n players chooses whether or not to become a political candidate and if so which position to take. There exists a continuum of citizens each of whom has a favourite position. The distribution of the favourite positions(histogram) is given by a density function $f:[0,1] \rightarrow (0,1]$.
+
+A candidate attracts the votes of those citizens whose favourite positions are closer to his position than to the position of any other candidate. If k-candidates choose the same position then each receives the fraction $1/k$ of votes that the position attracts. 
+
+The winner of the competition is the candidate who receives the most votes. The candidates have the following preferences: \\
+{Winning Individually(PW)} $>$ {Tie for First Place(PT)} $>$ {Stay out of Competition(N)} $>$ {Enter Game and Lose(PL)}.\\
+These are abbreviated as:\\
+Play-Win(PW) $>$ Play-Tie(PT) $>$ No-Play(NP) $>$ Play-Lose(PL).\\
+Consider the decision set to play or not to play, $\{P,NP\}$.
+
+We proceed to do the following:
+\begin{enumerate}
+\item formulate the above situation as a Strategic Game.
+\item find the set of Nash Equilibria when $n=2$,
+\item show that there exists no NE when $n=3$.
+\end{enumerate}
+
+
+
+\subsection{Formulation as a Strategic Game}
+\begin{enumerate}
+\item Set of Players, $P = {1,2,\cdots n}$
+\item Action set for each player, $A_i = \{P,N\}\times[0,1]$, with Joint Action profile set $A = A_1 \times \cdots A_n$.
+\item Utility function for each agent, $u_i: A \rightarrow \mathcal{R}$ with the Indicator function, $\i(\cdot)$ is derived from the computation of the number of votes received by each agent
+\begin{align*}
+u_i = \int_{z_1}^{z_2}f(t)dt \i(P)
+\end{align*}
+where, $x_i \in (z_1,z_2)$ and $Z_1,z_2$ contains all points closest to decision $x_i$ than to $x_j \neq x_i$.
+\end{enumerate}
+
+\subsection{2-Players}
+Since, decision of each player $a_i \in A_i = {P,N}\times [0,1]$, the utility matrix can be represented as
+\begin{align}
+u_1(a_1, a_2) = \begin{array}{ccc}
+& (P,y)&(N,y)\\
+(P,x)&(r_1,r_2)&(PW,NP)\\
+(N,x)&(NP,PW)&(NP,NP)
+\end{array}
+\end{align}
+From the given preference order of the agents, we note that in Equilibrium, both agent's shall choose to Play$(P)$ the game if its always true that playing would. The action profile $a = ((P,x),(P,y))$ is a weakly-dominating strategy. Note that the results of the decision can be labelled as $r_i \in {PW,PL,PT}$. The resulting choices are
+\begin{align}
+\begin{array}{c}
+\bigg|\begin{array}{ccc}
+& (P,y)&(N,y)\\
+(P,x)&(PT,PT)&(PW,NP)\\
+(N,x)&(NP,PW)&(NP,NP)
+\end{array}\bigg|
+\\ \\
+\bigg|\begin{array}{ccc}
+& (P,y)&(N,y)\\
+(P,x)&(PW,PL)&(PW,NP)\\
+(N,x)&(NP,PW)&(NP,NP)
+\end{array}\bigg|
+\\ \\
+\bigg|\begin{array}{ccc}
+& (P,y)&(N,y)\\
+(P,x)&(PL,PW)&(PW,NP)\\
+(N,x)&(NP,PW)&(NP,NP)
+\end{array}\bigg|
+\end{array}
+\end{align}
+
+Since, each player has a preference of $NP > PL$, in the absence of a TIE, the action strategy $a = ((P,x),(P,y)), x\neq y$ is NOT a Nash Equilibrium. 
+However, we learn that $a* = ((P,x),(P,x)), x=y$ is a Nash Equilibrium for this 2-player game. 
+
+\subsection{3-player Game}
+
+By a similar analysis as above, we first consider only the possible outcomes when all the agents choose to play the game. Consider the joint action $a = ((P,x_1),(P,x_2),(P,x_3))$ where the possible outcomes for the games with
+$r_i =\{PW,PL,PT\}$  are 
+\begin{align}
+r = (r_1,r_2,r_3) \in \{ (PT,PT,PT),\notag \\
+(PT,PT,PL),(PT,PL,PT),(PL,PT,PT),\notag \\
+(PW,PL,PL), (PL,PW,PL), (PL,PL,PW)\}. \label{eq:NashStateProbables}
+\end{align}
+
+
+The utility of each agent under $r = (PT,PT,PT)$ is $u_i = 1/3$.
+
+Further, note that the neighbouring alternatives on the cube are
+\begin{align*}
+\begin{array}{cc}
+(P,P,P)&(P,N,P)\\
+(N,P,P)&(P,P,N)\\
+\end{array}
+\end{align*}
+The utilities obtained by the players, when there's two people on a draw with one player refusing to play $\{(P,P,N),\cdots \}$ is $u_i = 1/2$.\\
+Hence,$u_{winner}((PT,PT,PT))= \frac{1}{3} < \frac{1}{2}= u_{winner}(PT,PT,NP)$ where $(PT,PT,NP) \in (P,P,N)$. Therefore, there is an incentive to deviate from the state $(PT,PT,PT)$ . Consequently, $(PT,PT,PT)$ is NOT a Nash Equilibrium.
+
+Further, by similar arguments we can prove that neither of the states in \eqref{eq:NashStateProbables} form a Nash Equilibrium. Hence,a Nash Equilibrium does not exist for a 3-player game. 
+
+\end{document}
+
+
+
+
