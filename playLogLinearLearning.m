@@ -15,8 +15,8 @@ PHI
 function playLogLinearLearning()
 clear all; close all;
 
-T = 0.1; % 1, 10, 100
-totalIterations = 100;
+T = 100; % 0.1 1, 10, 100
+totalIterations = 10000;
 totalAgents = 2;
 totalActions = 2
 
@@ -34,7 +34,7 @@ utilityMatrix = exp((1/T)*payoffMatrix);
 
 PHI = [-2 -1; -1 0];
 PHI_utility = exp(1/T*PHI);
-PHI_utility = PHI_utility./sum(PHI(:));
+PHI_utility = PHI_utility./sum(PHI_utility(:));
 PHI_utility_t = repmat(PHI_utility,1,1,totalIterations);
 
 % Define the JointAction_Frequency
@@ -80,7 +80,7 @@ for t=1:totalIterations
 end% time-iterations
 
 % ----------------------------------------------------------------------
-% Plot Iterations: 
+% Plot Iterations:
 
 fig1 = figure(1)
 colormap parula
@@ -89,20 +89,27 @@ for i = 1:2
     for j = 1:2
         count = count + 1;
         subplot(2,2,count)
-    plot(1:1:totalIter, jaf_Matrix(i,j,:),'g')
-    hold on
-    plot(1:1:totalIter, PHI_utility_t(i,j,:),'r')
-    hold off
+        y = reshape(jaf_Matrix(i,j,:), 1,[]);
+        plot(1:totalIterations, y,'g')
+        hold on
+        y = reshape(PHI_utility_t(i,j,:), 1,[]);
+        axis([1 totalIterations 0 0.5])
+        plot(1:totalIterations, y,'r')
+        hold off
     legend('emp.freq', 'analytical dist.')
-    msg = sprintf('Empirical Freqy. of playing state: (ROW,COL) = (%d, %d)',i,j);
-    title(msg)
+    msg = sprintf('(ROW,COL) = (%d, %d)',i,j);
+    title(msg)        
     end
 end
 
+disp('Analytical Frequencies for the different states:')
+PHI_utility
+disp('Temp. parameter')
+T 
 
 end
 
-function action = getPlayerAction_LogLinear(playerID, opponentID, prevActions, payoffMatrix)
+function action = getPlayerAction_LogLinear(playerID, opponentID, prevActions, utilityMatrix)
 
 oppAction = prevActions(opponentID);
 
@@ -123,13 +130,13 @@ end
 
 end
 
-function newAction_Indicator = getActionIndicatorMatrix(newActions)
+function newAction_Indicator = getActionIndicatorMatrix(actionProfile)
 
-if length(newActions) == 2
-        newAction_Indicator = zeros(2,2);
-        newAction_Indicator(newActions(1),newActions(2)) = 1;
-else 
-    error('length(newActions) ~= 2')
+if length(actionProfile) == 2
+    newAction_Indicator = zeros(2,2);
+    newAction_Indicator(actionProfile(1),actionProfile(2)) = 1;
+else
+    error('length(actionProfile) ~= 2:  More than 2 agents assumed!')
     
 end
 
